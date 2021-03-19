@@ -24,22 +24,22 @@ GH_TOKEN="the-github-token" PULL_REQUEST_URL="https://the-url" ./src/command/git
 or by overriding them in the following manner.
 
 ```
-GH_TOKEN=$GH_TOKEN  >> ./config.sh
+echo 'GH_TOKEN=$GH_TOKEN'  >> ./config.sh
 ```
 
 Once globals are set they don't need to be passed in on runtime. On CI, the template would be:
 
 ```
-GITHUB_API_URL="" >> ./config.sh
-GH_TOKEN="" >> ./config.sh
+echo 'GITHUB_API_URL=""' >> ./config.sh
+echo 'GH_TOKEN=""' >> ./config.sh
 
-REPOSITORY_PATH="" >> ./config.sh
-REPOSITORY_NAME="" >> ./config.sh
-REPOSITORY_ORGANISATION="" >> ./config.sh
+echo 'REPOSITORY_PATH=""' >> ./config.sh
+echo 'REPOSITORY_NAME=""' >> ./config.sh
+echo 'REPOSITORY_ORGANISATION=""' >> ./config.sh
 
-SONARQUBE_URL="" >> ./config.sh
-SONAR_TOKEN="" >> ./config.sh
-SONARQUBE_COMPONENT_ID="" >> ./config.sh
+echo 'SONARQUBE_URL=""' >> ./config.sh
+echo 'SONAR_TOKEN=""' >> ./config.sh
+echo 'SONARQUBE_COMPONENT_ID=""' >> ./config.sh
 ```
 
 ### Running commands:
@@ -48,6 +48,22 @@ Then run the command
 
 ```
 PULL_REQUEST_URL="https://the-url" ./src/command/github_delete_summary_from_pr.sh
+```
+
+For example, When SonarQube analysis is done
+
+```
+# If implementation is not based on webhook, account for propagation delay.
+wait 15
+
+# Decorate/Post a summary of the stats from SonarQube on the pull request.
+BRANCH=$CIRCLE_BRANCH PULL_REQUEST_URL=$CIRCLE_PULL_REQUEST ./laa-sonarqube-reusable-scripts/src/command/github_post_sonarqube_summary.sh
+
+# Decorate/Post individual issues found by SonarQube on the pull request.
+PULL_REQUEST_URL=$CIRCLE_PULL_REQUEST ./laa-sonarqube-reusable-scripts/src/command/sonarqube_relay_feedback_on_pr.sh
+
+# If SonarQube failed, exit with non-zero exit code.
+./laa-sonarqube-reusable-scripts/src/command/sonarqube_status.sh
 ```
 
 ### In CI
