@@ -9,10 +9,16 @@ This repository is meant to hold SonarQube scripts to facilitate developer workf
 
 ### Installation:
 
+Create config from template file
+
+```
+cp config.sh.template config.sh
+```
+
 The config.sh file houses all global variables used by the script. These can be overridden by passing in the explicit variables per command
 
 ```
-GH_TOKEN="the-github-token" BRANCH="xyz" PULL_REQUEST_URL="https://the-url" ./src/command/github_delete_summary_from_pr.sh
+GH_TOKEN="the-github-token" PULL_REQUEST_URL="https://the-url" ./src/command/github_delete_summary_from_pr.sh
 ```
 
 or by overriding them in the following manner.
@@ -41,7 +47,7 @@ SONARQUBE_COMPONENT_ID="" >> ./config.sh
 Then run the command
 
 ```
-BRANCH="xyz" PULL_REQUEST_URL="https://the-url" ./src/command/github_delete_summary_from_pr.sh
+PULL_REQUEST_URL="https://the-url" ./src/command/github_delete_summary_from_pr.sh
 ```
 
 ### In CI

@@ -7,6 +7,7 @@ __DIR__="$(dirname "$0")"
 
 . "$__DIR__/../service/utils.sh"
 . "$__DIR__/../../config.sh"
+. "$__DIR__/../service/validate_globals.sh"
 . "$__DIR__/../service/github_pr_comments.sh"
 . "$__DIR__/../service/github_delete_issue_comment.sh"
 . "$__DIR__/../service/github_post_pr_message.sh"
