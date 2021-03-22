@@ -3,7 +3,7 @@
 This repository is meant to hold SonarQube scripts to facilitate developer workflow in CI. When using SonarQube's community edition, there are several limitations to a good CI workflow. Added features such as pull `request decoration` can either be accessed through plugins or developer edition +. These scripts serve as an interim solution to bridge the gap in that functionality.
 
 ### Dependencies:
-- JQ library for shell.
+- JQ, sed, base64, git and curl libraries for shell.
 - Running instance of SonarQube with auth token.
 - Github access token.
 
