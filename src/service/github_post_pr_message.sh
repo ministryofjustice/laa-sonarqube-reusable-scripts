@@ -31,22 +31,18 @@ function commentOnDiff() {
 	callGithub POST "/repos/$1/$2/pulls/$PULL_REQUEST_NUMBER/comments" "$JSON"
 }
 
-_jq() {
-    printf "${1}" | base64 --decode | jq -r "${2}"
-}
-
 # Param 1 is expected to be sonarqube issues feedback in json.
 function commentOnDiffs() {
 	PULL_REQUEST_NUMBER=$1
 
 	for row in $(printf "${2}" | jq -r '.[] | @base64'); do
-		component=$(_jq $row '.component')
+		component=$(_jq "$row" '.component')
 
 		arrIN=(${component//:/ })
-		issueKey=$(_jq $row '.key')
-        LINE=$(_jq $row '.line')
-        MESSAGE=$(_jq $row '.message')"<br /><br /><a href='$SONARQUBE_URL/project/issues?id=$SONARQUBE_COMPONENT_ID&open=$issueKey&sinceLeakPeriod=true'>View details on SonarQube</a>"
-        SEVERITY=$(_jq $row '.severity')
+		issueKey=$(_jq "$row" '.key')
+        LINE=$(_jq "$row" '.line')
+        MESSAGE=$(_jq "$row" '.message')"<br /><br /><a href='$SONARQUBE_URL/project/issues?id=$SONARQUBE_COMPONENT_ID&open=$issueKey&sinceLeakPeriod=true'>View details on SonarQube</a>"
+        SEVERITY=$(_jq "$row" '.severity')
         FILE_PATH=${arrIN[1]}
 
         # Needs to be executed in the main source repository. Creates a huge dependency.

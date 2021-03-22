@@ -44,3 +44,7 @@ function getSeverityEmoticon() {
        	fi
     done
 }
+
+_jq() {
+    printf "${1}" | base64 --decode | jq -r ${2}
+}

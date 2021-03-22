@@ -2,6 +2,7 @@
 
 # This script is meant to delete old sonar reports from a pull requests
 # Cirle CI usage: BRANCH=$CIRCLE_BRANCH PULL_REQUEST_URL=$CIRCLE_PULL_REQUEST ./github_post_sonarqube_summary.sh
+# Optional vars - NEW_CDOE=1, OLD_CODE=0
 
 __DIR__="$(dirname "$0")"
 
@@ -21,8 +22,18 @@ echo 'Deleting existing SonarQube summary if exists.'
 pr_comments_response=$(getPrComments ${PULL_REQUEST_URL##*/})
 deleteComments "$pr_comments_response"
 
-SONAR_SUMMARY=$(quality_gate_metrics && new_code_summary && existing_code_summary)
+exit
+
+SONAR_SUMMARY=$(quality_gate_metrics)
+if [[ $NEW_CODE == 1 ]]; then
+	SONAR_SUMMARY="$SONAR_SUMMARY"$(new_code_summary)
+fi
+
+if [[ $OLD_CODE == 1 ]]; then
+	SONAR_SUMMARY="$SONAR_SUMMARY"$(existing_code_summary)
+fi
+
 PAYLOAD="SONARQUBE BOT MSG - [SonarQube analysis report]($SONARQUBE_URL/dashboard?id=$SONARQUBE_COMPONENT_ID). <br /><br />:zap: Summary $SONAR_SUMMARY"
 
 echo 'Send updated summary'
-sendPrMessage "$BRANCH" "$PAYLOAD"
+# sendPrMessage "$BRANCH" "$PAYLOAD"

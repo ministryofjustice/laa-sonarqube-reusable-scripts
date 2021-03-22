@@ -20,20 +20,16 @@ metricsMap=(
     'new_technical_debt::Techincal Debt'
 )
 
-_jq() {
-    printf "${row}" | base64 --decode | jq -r ${1}
-}
-
 printMetrics() {
     for row in $(printf "${1}" | jq -r '.[] | @base64'); do
-        METRIC=$(_jq '.metric')
+        METRIC=$(_jq "$row" '.metric')
 
         for index in "${metricsMap[@]}" ; do
             KEY="${index%%::*}"
             VALUE="${index##*::}"
 
             if [[ $KEY == $METRIC ]]; then
-                printf "$VALUE - $(_jq "$2")<br />";
+                printf "$VALUE - $(_jq "$row" "$2")<br />";
                 break;
             fi
         done

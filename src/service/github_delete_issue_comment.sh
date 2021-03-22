@@ -6,22 +6,20 @@
 # CIRCLE_PROJECT_USERNAME=ministryofjustice
 # CIRCLE_PROJECT_REPONAME=laa-ccms-pui
 
-_jq() {
-    printf "${1}" | base64 --decode | jq -r ${2}
-}
-
 # Param 1 should be a list of comments in JSON from github.
 deleteComments() {
-    for row in $(printf "${1}" | jq -r '.[] | @base64'); do
-        OWNER=$(_jq $row '.user.login')
-        MESSAGE=$(_jq $row '.body')
-        MESSAGE_ID=$(_jq $row '.id')
-        IS_BOT_MESSAGE=$(echo $MESSAGE | grep -e "^SONARQUBE BOT MSG - .*" )
+  for row in $(printf "${1}" | jq -r '.[] | @base64'); do
+    OWNER=$(_jq "$row" '.user.login')
+    MESSAGE=$(_jq "$row" '.body')
+    MESSAGE_ID=$(_jq "$row" '.id')
+    IS_BOT_MESSAGE=$(echo $MESSAGE | grep -e "^SONARQUBE BOT MSG - .*" )
 
-        if [[ $IS_BOT_MESSAGE != "" ]]; then
-          deleteComment $MESSAGE_ID
-        fi
-    done
+    echo $MESSAGE
+
+    if [[ $IS_BOT_MESSAGE != "" ]]; then
+      deleteComment $MESSAGE_ID
+    fi
+  done
 }
 
 deleteComment() {
@@ -32,14 +30,13 @@ deleteComment() {
 
 deleteDiffComments() {
   for row in $(echo "${1}" | jq -r '.[] | @base64'); do
+    MESSAGE=$(_jq "$row" '.body')
+    MESSAGE_ID=$(_jq "$row" '.id')
+    IS_BOT_MESSAGE=$(echo $MESSAGE | grep -e "^\[SONARQUBE BOT ISSUE\].*" )
 
-      MESSAGE=$(_jq "$row" '.body')
-      MESSAGE_ID=$(_jq "$row" '.id')
-      IS_BOT_MESSAGE=$(echo $MESSAGE | grep -e "^\[SONARQUBE BOT ISSUE\].*" )
-
-      if [[ $IS_BOT_MESSAGE != "" ]]; then
-        deleteDiffComment $MESSAGE_ID
-      fi
+    if [[ $IS_BOT_MESSAGE != "" ]]; then
+      deleteDiffComment $MESSAGE_ID
+    fi
   done
 }
 
