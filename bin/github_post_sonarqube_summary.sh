@@ -22,8 +22,6 @@ echo 'Deleting existing SonarQube summary if exists.'
 pr_comments_response=$(getPrComments ${PULL_REQUEST_URL##*/})
 deleteComments "$pr_comments_response"
 
-exit
-
 SONAR_SUMMARY=$(quality_gate_metrics)
 if [[ $NEW_CODE == 1 ]]; then
 	SONAR_SUMMARY="$SONAR_SUMMARY"$(new_code_summary)
@@ -36,4 +34,4 @@ fi
 PAYLOAD="SONARQUBE BOT MSG - [SonarQube analysis report]($SONARQUBE_URL/dashboard?id=$SONARQUBE_COMPONENT_ID). <br /><br />:zap: Summary $SONAR_SUMMARY"
 
 echo 'Send updated summary'
-# sendPrMessage "$BRANCH" "$PAYLOAD"
+sendPrMessage "$BRANCH" "$PAYLOAD"
