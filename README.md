@@ -9,6 +9,8 @@ This repository is meant to hold SonarQube scripts to facilitate developer workf
 
 ### Installation:
 
+To avoid being affected by changes introduced in the main branch, clone a particular tag rather than a branch.
+
 Create config from template file
 
 ```
@@ -69,3 +71,7 @@ PULL_REQUEST_URL=$CIRCLE_PULL_REQUEST ./laa-sonarqube-reusable-scripts/bin/sonar
 ### In CI
 
 SonarQube allows users to register webhooks to respond to events such as post analysis actions. For such an implementation one needs an active resource listening for those webhooks. In the absence of such facility, these scripts can be used within the CI pipeline to achieve certain functionality.
+
+### Development and changes
+
+Any changes introduced should be tagged using SemVer versioning strategy.
