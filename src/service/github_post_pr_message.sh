@@ -24,9 +24,13 @@ function commentOnDiff() {
 	COMMIT_ID=$4
 	FILE_PATH="$5"
 	LINE=$6
-	MESSAGE="$7"
+	MESSAGE="${7}"
+	MESSAGE="${MESSAGE//\"/\\\"}"
 
 	JSON='{ "body": "'"$MESSAGE"'", "path": "'"$FILE_PATH"'", "line": '$LINE', "side": "RIGHT", "commit_id": "'"$COMMIT_ID"'" }'
+
+	echo 'Comment: '$MESSAGE
+	echo 'File: '$FILE_PATH':'$LINE
 
 	callGithub POST "/repos/$1/$2/pulls/$PULL_REQUEST_NUMBER/comments" "$JSON"
 }
@@ -35,7 +39,7 @@ function commentOnDiff() {
 function commentOnDiffs() {
 	PULL_REQUEST_NUMBER=$1
 
-	for row in $(printf "${2}" | jq -r '.[] | @base64'); do
+	for row in $(echo "${2}" | jq -r '.[] | @base64'); do
 		component=$(_jq "$row" '.component')
 
 		arrIN=(${component//:/ })
