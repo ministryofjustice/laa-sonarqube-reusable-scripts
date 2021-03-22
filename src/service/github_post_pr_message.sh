@@ -53,7 +53,7 @@ function commentOnDiffs() {
         COMMIT_ID=$(cd $REPOSITORY_PATH && getFileLineCommitHash "$FILE_PATH" $LINE)
 
         if [[ -z $COMMIT_ID ]]; then
-        	echo 'UNABLE TO EXTRACT COMMIT ID FOR THE CHANGE FROM REPOSITORY PATH: '$REPOSITORY_PATH
+        	echo "UNABLE TO EXTRACT COMMIT ID FOR THE CHANGE FROM REPOSITORY PATH: '$REPOSITORY_PATH', FILE: $FILE_PATH:$LINE"
         	exit 1
        	fi
 
