@@ -11,6 +11,10 @@ This repository is meant to hold SonarQube scripts to facilitate developer workf
 
 To avoid being affected by changes introduced in the main branch, clone a particular tag rather than a branch.
 
+```
+git clone --depth 1 --branch <tag_name> <this_repo_url>
+```
+
 Create config from template file
 
 ```
