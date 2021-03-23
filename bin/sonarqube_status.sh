@@ -2,7 +2,7 @@
 
 # Check status of SonarQube.
 
-__DIR__="$(dirname "$0")"
+__DIR__=${__DIR__:=$(dirname "$0")}
 
 . "$__DIR__/../src/service/utils.sh"
 . "$__DIR__/../config.sh"

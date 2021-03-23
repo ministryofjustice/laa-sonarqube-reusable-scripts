@@ -14,8 +14,6 @@ deleteComments() {
     MESSAGE_ID=$(_jq "$row" '.id')
     IS_BOT_MESSAGE=$(echo $MESSAGE | grep -e "^SONARQUBE BOT MSG - .*" )
 
-    echo $MESSAGE
-
     if [[ $IS_BOT_MESSAGE != "" ]]; then
       deleteComment $MESSAGE_ID
     fi

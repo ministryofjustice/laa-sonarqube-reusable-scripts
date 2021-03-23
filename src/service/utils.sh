@@ -45,6 +45,10 @@ function getSeverityEmoticon() {
     done
 }
 
+function getPrNumberFromPrUrl() {
+	echo "$1" | sed 's/[^0-9]*//g'
+}
+
 _jq() {
     printf "${1}" | base64 --decode | jq -r ${2}
 }

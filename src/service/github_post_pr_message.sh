@@ -8,14 +8,25 @@ function sendPrMessage() {
 	BODY="$2"
 
 	echo 'Fetching PR URL';
-	pr_response=$(callGithub GET "/repos/$REPOSITORY_ORGANISATION/$REPOSITORY_NAME/pulls?head=$REPOSITORY_ORGANISATION:$BRANCH&state=open")
-	if [ $(echo $pr_response | jq length) -eq 0 ]; then
+	pr_comment_url=$(getBranchPr $BRANCH)
+	if [[ $pr_comment_url == 0 ]]; then
 	  echo "No PR found to update, response: $pr_response"
 	else
-	  pr_comment_url=$(echo $pr_response | jq -r ".[]._links.comments.href")
 	  JSON='{ "body": "'"$BODY"'" }'
 	  echo 'Sending message to PR: '$pr_comment_url
 	  callGithubWithoutPrefix POST "$pr_comment_url" "$JSON"
+	fi
+}
+
+function getBranchPr() {
+	BRANCH=$1
+
+	pr_response=$(callGithub GET "/repos/$REPOSITORY_ORGANISATION/$REPOSITORY_NAME/pulls?head=$REPOSITORY_ORGANISATION:$BRANCH&state=open")
+
+	if [ $(echo $pr_response | jq length) -eq 0 ]; then
+	  echo 0
+	else
+	  echo $pr_response | jq -r ".[]._links.comments.href"
 	fi
 }
 
