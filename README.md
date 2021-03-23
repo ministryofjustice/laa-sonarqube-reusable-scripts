@@ -79,3 +79,10 @@ SonarQube allows users to register webhooks to respond to events such as post an
 ### Development and changes
 
 Any changes introduced should be tagged using SemVer versioning strategy.
+
+Integration tests are fully end to end. In order to run these tests you'll need to have:
+- A target repository
+- A branch without any associated PRs open.
+- A branch with one or many associated PRs open.
+
+Once you have the above, open the test/runner.sh file to set project up. 
