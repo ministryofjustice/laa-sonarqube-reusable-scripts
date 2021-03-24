@@ -2,6 +2,12 @@
 
 This repository is meant to hold SonarQube scripts to facilitate developer workflow in CI. When using SonarQube's community edition, there are several limitations to a good CI workflow. Added features such as pull `request decoration` can either be accessed through plugins or developer edition +. These scripts serve as an interim solution to bridge the gap in that functionality.
 
+## Ownership
+
+LAA CCMS PUI team.
+
+If this is out of date, please update with whoever looks after this repository.
+
 ### Dependencies:
 - JQ, sed, base64, git and curl libraries for shell.
 - Running instance of SonarQube with auth token.
@@ -24,7 +30,7 @@ cp config.sh.template config.sh
 The config.sh file houses all global variables used by the script. These can be overridden by passing in the explicit variables per command
 
 ```
-GH_TOKEN="the-github-token" PULL_REQUEST_URL="https://the-url" ./bin/github_delete_summary_from_pr.sh
+GH_TOKEN="the-github-token" BRANCH="CCLS-8843/some-branch" ./bin/github_delete_summary_from_pr.sh
 ```
 
 or by overriding them in the following manner.
@@ -53,20 +59,20 @@ echo "SONARQUBE_COMPONENT_ID=''" >> ./config.sh
 Commands are located in the bin folder. Running a command
 
 ```
-PULL_REQUEST_URL="https://the-url" ./bin/github_delete_summary_from_pr.sh
+BRANCH="CCLS-8843/some-branch" ./bin/github_delete_summary_from_pr.sh
 ```
 
 For example, When SonarQube analysis is done
 
 ```
 # If implementation is not based on webhook, account for propagation delay.
-wait 15
+wait 20
 
 # Decorate/Post a summary of the stats from SonarQube on the pull request.
-BRANCH=$CIRCLE_BRANCH PULL_REQUEST_URL=$CIRCLE_PULL_REQUEST ./laa-sonarqube-reusable-scripts/bin/github_post_sonarqube_summary.sh
+BRANCH=$CIRCLE_BRANCH ./laa-sonarqube-reusable-scripts/bin/github_post_sonarqube_summary.sh
 
 # Decorate/Post individual issues found by SonarQube on the pull request.
-PULL_REQUEST_URL=$CIRCLE_PULL_REQUEST ./laa-sonarqube-reusable-scripts/bin/sonarqube_relay_feedback_on_pr.sh
+BRANCH=$CIRCLE_BRANCH ./laa-sonarqube-reusable-scripts/bin/sonarqube_relay_feedback_on_pr.sh
 
 # If SonarQube failed, exit with non-zero exit code.
 ./laa-sonarqube-reusable-scripts/bin/sonarqube_status.sh
