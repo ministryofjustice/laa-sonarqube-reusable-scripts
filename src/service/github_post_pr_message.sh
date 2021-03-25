@@ -65,7 +65,7 @@ function commentOnDiffs() {
 
         if [[ -z $COMMIT_ID ]]; then
         	echo "UNABLE TO EXTRACT COMMIT ID FOR THE CHANGE FROM REPOSITORY PATH: '$REPOSITORY_PATH', FILE: $FILE_PATH:$LINE"
-        	exit 1
+        	continue
        	fi
 
         commentOnDiff $REPOSITORY_ORGANISATION $REPOSITORY_NAME $PULL_REQUEST_NUMBER $COMMIT_ID "$FILE_PATH" $LINE "[SONARQUBE BOT ISSUE]<br /><br />"$(getSeverityEmoticon $SEVERITY)" $MESSAGE"
