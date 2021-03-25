@@ -31,7 +31,7 @@ function getSeverityEmoticon() {
 		'MINOR||:cactus:'
 		'BLOCKER||:no_entry:'
 		'CRITICAL||:no_entry_sign:'
-		'INFO||:information:'
+		'INFO||:information_source:'
 	)
 
 	for index in "${severityMap[@]}" ; do
