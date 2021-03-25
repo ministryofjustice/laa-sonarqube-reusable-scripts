@@ -44,5 +44,5 @@ if [[ $(echo $issues | jq length) -eq 0 ]]; then
 	echo 'No issues found.'
 else
 	echo 'Dispatching comments to github'
-	commentOnDiffs "PR_NUMBER" "$issues"
+	commentOnDiffs "$PR_NUMBER" "$issues"
 fi
