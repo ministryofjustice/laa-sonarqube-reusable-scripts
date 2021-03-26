@@ -11,7 +11,7 @@ If this is out of date, please update with whoever looks after this repository.
 ### Dependencies:
 - JQ, sed, base64, git and curl libraries for shell.
 - Running instance of SonarQube with auth token.
-- Github access token.
+- Github access token. (App token or personal access token)
 
 ### Installation:
 
