@@ -9,8 +9,8 @@ LAA CCMS PUI team.
 If this is out of date, please update with whoever looks after this repository.
 
 ### Dependencies:
-- JQ, sed, base64, git and curl libraries for shell.
-- Running instance of SonarQube with auth token.
+- JQ 1.6, sed, base64, git V2.24.X and curl libraries for shell.
+- Running instance of SonarQube V8.3 with auth token.
 - Github access token. (App token or personal access token)
 
 ### Installation:
