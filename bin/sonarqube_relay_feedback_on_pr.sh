@@ -12,6 +12,7 @@ __DIR__=${__DIR__:=$(dirname "$0")}
 . "$__DIR__/../src/service/github_post_pr_message.sh"
 . "$__DIR__/../src/service/sonarqube_get_feedback_for_pr.sh"
 . "$__DIR__/../src/service/github_pr_comments.sh"
+. "$__DIR__/../src/service/github_pr_files.sh"
 
 isset "REPOSITORY_PATH must be set." $REPOSITORY_PATH
 isset "BRANCH must be set." $BRANCH
