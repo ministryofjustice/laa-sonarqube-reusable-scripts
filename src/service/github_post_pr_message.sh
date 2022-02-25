@@ -52,9 +52,9 @@ function commentOnDiffs() {
 
 	# Check if the file for which the comment is to be posted is actually part of the pull request.
 	echo 'Files retrieved'
-    PR_FILES=$(getPRFilesOnly $PULL_REQUEST_NUMBER)
+	PR_FILES=$(getPRFilesOnly $PULL_REQUEST_NUMBER)
 
-    COMMENTS_POSTED=0
+	COMMENTS_POSTED=0
 	for row in $(echo "${2}" | jq -r '.[] | @base64'); do
 		component=$(_jq "$row" '.component')
 
@@ -62,28 +62,28 @@ function commentOnDiffs() {
 		FILE_PATH=${arrIN[1]}
 
 		# SonarQube issues list can relate to problems that are not associated with the current PR, filter out.
-       	FOUND=$(echo "$PR_FILES" | grep "$FILE_PATH")
+		FOUND=$(echo "$PR_FILES" | grep "$FILE_PATH")
 
-       	if [[ -z $FOUND ]]; then
-       		continue;
-       	fi
+		if [[ -z $FOUND ]]; then
+			continue;
+		fi
 
 		issueKey=$(_jq "$row" '.key')
-        LINE=$(_jq "$row" '.line')
-        MESSAGE=$(_jq "$row" '.message')"<br /><br /><a href='$SONARQUBE_URL/project/issues?id=$SONARQUBE_COMPONENT_ID&open=$issueKey&sinceLeakPeriod=true'>View details on SonarQube</a>"
-        SEVERITY=$(_jq "$row" '.severity')
+		LINE=$(_jq "$row" '.line')
+		MESSAGE=$(_jq "$row" '.message')"<br /><br /><a href='$SONARQUBE_URL/project/issues?id=$SONARQUBE_COMPONENT_ID&open=$issueKey&sinceLeakPeriod=true'>View details on SonarQube</a>"
+		SEVERITY=$(_jq "$row" '.severity')
 
-        # Needs to be executed in the main source repository. Creates a huge dependency.
-        COMMIT_ID=$(cd $REPOSITORY_PATH && getFileLineCommitHash "$FILE_PATH" $LINE)
+		# Needs to be executed in the main source repository. Creates a huge dependency.
+		COMMIT_ID=$(cd $REPOSITORY_PATH && getFileLineCommitHash "$FILE_PATH" $LINE)
 
-        if [[ -z $COMMIT_ID ]]; then
-        	echo "UNABLE TO EXTRACT COMMIT ID FOR THE CHANGE FROM REPOSITORY PATH: '$REPOSITORY_PATH', FILE: $FILE_PATH:$LINE"
-        	continue
-       	fi
+		if [[ -z $COMMIT_ID ]]; then
+			echo "UNABLE TO EXTRACT COMMIT ID FOR THE CHANGE FROM REPOSITORY PATH: '$REPOSITORY_PATH', FILE: $FILE_PATH:$LINE"
+			continue
+		fi
 
-    	# commentOnDiff $REPOSITORY_ORGANISATION $REPOSITORY_NAME $PULL_REQUEST_NUMBER $COMMIT_ID "$FILE_PATH" $LINE "[SONARQUBE BOT ISSUE]<br /><br />"$(getSeverityEmoticon $SEVERITY)" $MESSAGE"
-    	((COMMENTS_POSTED=COMMENTS_POSTED+1))
-    done
+		# commentOnDiff $REPOSITORY_ORGANISATION $REPOSITORY_NAME $PULL_REQUEST_NUMBER $COMMIT_ID "$FILE_PATH" $LINE "[SONARQUBE BOT ISSUE]<br /><br />"$(getSeverityEmoticon $SEVERITY)" $MESSAGE"
+		((COMMENTS_POSTED=COMMENTS_POSTED+1))
+	done
 
-    echo "Number of comments sent: ${COMMENTS_POSTED}"
+	echo "Number of comments sent: ${COMMENTS_POSTED}"
 }
