@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function getPRFilesOnly() {
+function getPrFilesOnly() {
     echo $(getPrFilesSummary ${1} | jq -r '.[].filename')
 }
 
